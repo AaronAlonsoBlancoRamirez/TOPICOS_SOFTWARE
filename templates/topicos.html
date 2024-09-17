@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quiz-container {
+            display: flex;
+            width: 80%;
+            max-width: 800px;
+            justify-content: space-between;
+        }
+
+        .pregunta-container {
+            width: 45%; /* Reducido para dar espacio al cronómetro */
+            margin: 20px;
+        }
+
+        .alternativas-container {
+            margin: 10px 0;
+        }
+
+        .boton-siguiente {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #cronometro-container {
+            width: 45%; /* Reducido para dar espacio a la pregunta */
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #cronometro {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+
+        #iniciar-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Formulario para buscar la pregunta -->
+    <form method="POST" action="/buscar_pregunta">
+        <label for="buscar">Escribe tu pregunta:</label>
+        <input type="text" id="buscar" name="buscar_pregunta" required>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <!-- Contenido del cuestionario -->
+    {% if pregunta %}
+    <div class="quiz-container">
+        <div class="pregunta-container">
+            <h3 id="pregunta">{{ pregunta['pregunta'] }}</h3>
+            <form method="post" action="/submit">
+                <div class="alternativas-container">
+                    {% for alternativa in pregunta['alternativas'] %}
+                    <label>
+                        <input type="radio" name="pregunta1" value="{{ alternativa }}" required>
+                        {{ alternativa }}
+                    </label><br>
+                    {% endfor %}
+                </div>
+                <input type="submit" class="boton-siguiente" value="Enviar">
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</body>
+</html>
